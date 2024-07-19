@@ -8,4 +8,4 @@
 #include "../EldenTree.hpp"
 #include "../God.hpp"
 
-#endif  // et_HPP
+#endif // et_HPP
