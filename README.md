@@ -1,5 +1,5 @@
 # EldenTree
-## _EldenTree event handler_
+
 
 ![image info](logo.jpeg "EldenTree logo")
 
@@ -70,7 +70,7 @@ auto main() -> int
 }
 ```
 <br/>
-<br/>
+
 
 ## Getting Started
 
@@ -78,13 +78,12 @@ To get started, see [Requirements](#requirements) and [Installation](#installati
 for a more comprehensive feature overview.
 
 <br/>
-<br/>
 
 ## Requirements
 EldenTree relays on some third-party libraries, such as [Google Benchmark][Benchmark]
 and [Google Test][Test]. Use [Vcpkg][vcpkg] to installing them automatically via [Cmake][cmake]!
 <br/>
-<br/>
+
 
 ## Installation
 see all presets and select one! For example:
@@ -101,7 +100,7 @@ cmake --preset Linux-Release-Ninja
 cd Linux-Release-Ninja && ninja
 ``
 <br/>
-<br/>
+
 
 ## Documents
 Enable DO_DOC option in CMakeLists.txt . After that You'll see a doc folder in you build directory.
