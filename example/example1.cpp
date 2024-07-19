@@ -32,10 +32,12 @@ auto main() -> int
     tree.addEvent(Medusa, et::god::GodEvent{"medosa said haha"});
 
 
-    tree.connect(zeous, Medusa); // unlike Qt eldentree is bidirectional
+   tree.connect(zeous, Medusa); // unlike Qt eldentree is bidirectional
 
     tree.addEvent(Medusa, et::god::GodEvent{"hello zeous from medusa"});
     tree.addEvent(zeous, et::god::GodEvent{"hello medusa from zeus"});
+
+    std::cout << "something from main " << std::endl;
 
     return tree.exec();
 }

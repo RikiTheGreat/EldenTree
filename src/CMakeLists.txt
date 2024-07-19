@@ -7,7 +7,7 @@ target_include_directories(EldenTree PUBLIC
         $<INSTALL_INTERFACE:include>
 )
 
-# specify other properties like version
+# Optionally specify other properties like version
 set_target_properties(EldenTree PROPERTIES VERSION ${PROJECT_VERSION})
 
 if(DO_FORMAT)

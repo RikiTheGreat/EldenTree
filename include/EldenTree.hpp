@@ -64,15 +64,23 @@ public:
     void stop();
 
     /**
-     * @brief // For waiting until events are processed
+     * @brief  For waiting until events are processed
      * @note you should return this function from your main
      * @return int Exit status code for main
      */
     int exec();
 
-    void connect(god::God const &god1, god::God const &god2);
+    /**
+     * @brief Connect god1 and god2 events together
+     * @param god1
+     * @param god2
+     */
+void connect(god::God const &god1, god::God const &god2);
 
 private:  // methods
+    /**
+     * @brief Enternal event loop
+     */
     void eventLoop();
 
 private:
@@ -82,9 +90,9 @@ private:
     std::atomic<bool> _eventsPending;
     std::unordered_map<god::God, std::vector<god::God>> _connections;
 #if HAS_JTHREAD
-    std::jthread _worker;
+  std::vector<std::jthread> _worker;
 #else
-    std::thread _worker;
+    std::vector<std::thread> _worker;
 #endif
     std::mutex _mutex;
     std::condition_variable _cv;

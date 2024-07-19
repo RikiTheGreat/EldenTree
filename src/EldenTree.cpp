@@ -2,16 +2,22 @@
 // Created by mahdi on 7/17/24.
 //
 
-#include "EldenTree.hpp"
+
+#include <mutex>
 
 #include "logger.hpp"
+#include "EldenTree.hpp"
 
 et::EldenTree::EldenTree()
     : _running(true), _eventsPending(false) {
 #if HAS_JTHREAD
-    _worker = std::jthread(&EldenTree::eventLoop, this);
+    for (int i {}; i < 1; ++i)
+        _worker.emplace_back(&EldenTree::eventLoop, this);
+
 #else
-    _worker = std::thread(&EldenTree::eventLoop, this);
+    for (int i = 0; i < 1; ++i) // you can increase the thread number
+        _worker.emplace_back(std::thread(&EldenTree::eventLoop, this));
+
 #endif
 }
 
@@ -56,14 +62,17 @@ void et::EldenTree::stop() {
 #else
         LOG("program has alreay stopped");
 #endif
-        std::exit(-1);
+        return;
     }
 
     _cv.notify_all();
 
 #if HAS_JTHREAD == 0
-    if (_worker.joinable())
-        _worker.join();
+    for(auto & v : _worker) {
+        if(v.joinable())
+            v.join();
+    }
+
 #endif
 }
 
@@ -81,35 +90,44 @@ void et::EldenTree::connect(god::God const &god1, god::God const &god2) {
 
 void et::EldenTree::eventLoop() {
     while (_running) {
-        std::unique_lock<std::mutex> lock(this->_mutex);
-        _cv.wait(lock, [this]() {
-            return !this->_eventQueues.empty() || !this->_running;
-        });
+        std::map<god::God, std::queue<god::GodEvent>> localEventQueues;
 
-        for (auto it = _eventQueues.begin(); it != _eventQueues.end();) {
-            god::God g = it->first;
-            std::queue<god::GodEvent> &queue = it->second;
+        {
+            std::unique_lock<std::mutex> lock(this->_mutex);
+            _cv.wait(lock, [this]() {
+                return !_eventQueues.empty() || !_running;
+            });
+
+            if (!_running && _eventQueues.empty()) {
+                return; // Exit thread if stopping and no events are left
+            }
+
+            localEventQueues.swap(_eventQueues); // Swap queues to process them without holding the mutex
+            if (!localEventQueues.empty()) {
+                _eventsPending.store(false);
+            }
+        }
+
+        for (auto &pair : localEventQueues) {
+            const god::God &g = pair.first;
+            auto &queue = pair.second;
 
             while (!queue.empty()) {
                 god::GodEvent event = queue.front();
                 queue.pop();
-                lock.unlock();
-                if (_gods.find(g) != _gods.end()) {
-                    _gods[g](event);
-                }
-                lock.lock();
-            }
 
-            if (queue.empty()) {
-                it = _eventQueues.erase(it);  // Remove the pair from the map and move to next element
-            } else {
-                ++it;  // Move to the next element in the iteration
+                if (_gods.find(g) != _gods.end()) {
+                    _gods[g](event); // Process event
+                }
             }
         }
 
-        if (_eventQueues.empty()) {
-            _eventsPending.store(false);  // No events pending
-            _eventsProcessed.notify_all();
+        {
+            std::unique_lock<std::mutex> lock(this->_mutex);
+            if (_eventQueues.empty()) {
+                _eventsProcessed.notify_all(); // Notify that all events are processed
+            }
         }
     }
 }
+
