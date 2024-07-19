@@ -1,2 +1,5 @@
 .idea
 linRelease-ninja-build
+linDebug-make-build
+winDebug-msvc-build
+winRelease-ninja-build

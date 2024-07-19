@@ -26,7 +26,7 @@ auto main() -> int
     tree.addEvent(zeous, et::god::GodEvent{"zeous said: bye"});
 
     tree.addGod(Medusa, [](et::god::GodEvent const& event) {
-        std::cout << "Medusa: " << event.info << std::endl;
+        std::cout << "Medusa: " << event.info << '\n';
     });
     tree.addEvent(Medusa, et::god::GodEvent{"medosa said fis fis"});
     tree.addEvent(Medusa, et::god::GodEvent{"medosa said haha"});
@@ -37,7 +37,7 @@ auto main() -> int
     tree.addEvent(Medusa, et::god::GodEvent{"hello zeous from medusa"});
     tree.addEvent(zeous, et::god::GodEvent{"hello medusa from zeus"});
 
-    std::cout << "something from main " << std::endl;
+    std::cout << "something from main " << '\n';
 
     return tree.exec();
 }

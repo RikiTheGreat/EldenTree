@@ -6,7 +6,7 @@
 #include <benchmark/benchmark.h>
 
 
-static void BM_SomeFunction(benchmark::State& state) {
+static void BM_EldenTree(benchmark::State& state) {
     // Perform setup here
     et::god::God const Medusa{
         .name = "Medusa",
@@ -18,15 +18,12 @@ static void BM_SomeFunction(benchmark::State& state) {
         .id = 1
     };
     et::EldenTree tree;
-    tree.connect(Z, Medusa);
 
     for (auto _ : state) {
         tree.addEvent(Medusa, "hi");
-        tree.addEvent(Z, "bye");
     }
-    BENCHMARK_DONT_OPTIMIZE;
 }
-// Register the function as a benchmark
-BENCHMARK(BM_SomeFunction);
-// Run the benchmark
+
+BENCHMARK(BM_EldenTree);
+
 BENCHMARK_MAIN();

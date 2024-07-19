@@ -36,18 +36,15 @@
 
 #if HAS_SOURCE_LOCATION
 void log(std::string const &message,
-         const std::source_location location =
-             std::source_location::current());
+         const std::source_location location = std::source_location::current());
 
 #else
 
-void log(std::string const &message,
-         const char *file,
-         int line,
+void log(std::string const &message, const char *file, int line,
          const char *function);
 
 #define LOG(message) log(message, __FILE__, __LINE__, __func__)
 
 #endif
 
-#endif  // LOGGER_HPP
+#endif // LOGGER_HPP

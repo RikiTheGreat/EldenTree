@@ -1,7 +1,7 @@
 # EldenTree
 
 
-![image info](logo.jpeg "EldenTree logo")
+![image info](resources/logo.jpeg "EldenTree logo")
 
 
 EldenTree is an event handler library written in  ✨C++✨   in order to please the gods.
@@ -106,6 +106,9 @@ cd Linux-Release-Ninja && ninja
 Enable DO_DOC option in CMakeLists.txt . After that You'll see a doc folder in you build directory.
 go inside it and then run ``doxygen Doxyfile.doc``.
 
+
+## Performance matters!
+![image info](resources/bench.png "benchmark image")
 
 [Benchmark]: https://github.com/google/benchmark
 [Test]: https://github.com/google/googletest
