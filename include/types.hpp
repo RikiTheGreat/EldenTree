@@ -41,9 +41,6 @@ using EventQueue = std::map<god::God, std::queue<god::GodEvent>>;
 
 namespace et::land {
 #define NUMBER_OF_LANDS std::thread::hardware_concurrency()
-#if HAS_JTHREAD
-using Lands = std::vector<std::jthread>;
-#else
 
 #if HAS_JTHREAD
 using Lands = std::vector<std::jthread>;
@@ -53,7 +50,6 @@ using Lands = std::vector<std::thread>;
 
 using iland32 = int;
 
-#endif
-
 } // namespace et::land
-#endif // TYPES_HPP
+
+#endif
