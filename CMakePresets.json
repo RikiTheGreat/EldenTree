@@ -1,0 +1,58 @@
+{
+  "version" : 3,
+  "configurePresets": [
+    {
+      "name": "windows",
+      "hidden": true,
+      "binaryDir": "win-build",
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "cl",  "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"}
+    },
+    {
+      "name": "linux",
+      "hidden": true,
+      "binaryDir": "lin-build",
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "g++", "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"}
+    },
+
+    {
+      "name": "Windows-Release-Ninja",
+      "inherits": "windows",
+      "displayName": "Windows Release Ninja ",
+      "description": "Windows Release Ninja",
+      "binaryDir": "winRelease-ninja-build",
+      "generator": "Ninja",
+      "cacheVariables": {"CMAKE_BUILD_TYPE":"Release"}
+
+    },
+    {
+      "name": "Windows-Debug-msvc",
+      "inherits": "windows",
+      "displayName": "Windows debug msvc",
+      "binaryDir": "winDebug-msvc-build",
+      "generator": "Visual Studio 17",
+      "cacheVariables": {"CMAKE_BUILD_TYPE" : "Debug"}
+
+    },
+
+    {
+      "name": "Linux-Release-Ninja",
+      "inherits": "linux",
+      "displayName": "Linux Release Ninja",
+      "description": "Linux Release Ninja",
+      "binaryDir": "linRelease-ninja-build",
+      "generator": "Ninja",
+      "cacheVariables": {"CMAKE_BUILD_TYPE":"Release"}
+
+    },
+    {
+      "name": "Linux-Debug-make",
+      "inherits": "linux",
+      "displayName": "Linux debug-make",
+      "description": "Linux debug-make",
+      "binaryDir": "linDebug-make-build",
+      "generator": "Unix Makefiles",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+
+    }
+  ]
+}

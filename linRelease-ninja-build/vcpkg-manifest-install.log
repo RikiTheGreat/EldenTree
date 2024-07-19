@@ -1,0 +1,28 @@
+Fetching registry information from https://github.com/microsoft/vcpkg (HEAD)...
+Detecting compiler hash for triplet x64-linux...
+Compiler found: /usr/bin/c++
+The following packages will be built and installed:
+    gtest:x64-linux@1.14.0#1 -- /home/mahdi/.cache/vcpkg/registries/git-trees/75ebdb53e37267a1d5f6283223367cd0aa1104ef
+  * vcpkg-cmake:x64-linux@2024-04-23 -- /home/mahdi/.cache/vcpkg/registries/git-trees/e74aa1e8f93278a8e71372f1fa08c3df420eb840
+  * vcpkg-cmake-config:x64-linux@2024-05-23 -- /home/mahdi/.cache/vcpkg/registries/git-trees/97a63e4bc1a17422ffe4eff71da53b4b561a7841
+Additional packages (*) will be modified to complete this operation.
+Restored 3 package(s) from /home/mahdi/.cache/vcpkg/archives in 80.8 ms. Use --debug to see more details.
+Installing 1/3 vcpkg-cmake-config:x64-linux@2024-05-23...
+Elapsed time to handle vcpkg-cmake-config:x64-linux: 757 us
+vcpkg-cmake-config:x64-linux package ABI: 1573e096dc34bc74308f51d22897b06370d4f2376a5a4de18eac9cfbee5de53f
+Installing 2/3 vcpkg-cmake:x64-linux@2024-04-23...
+Elapsed time to handle vcpkg-cmake:x64-linux: 714 us
+vcpkg-cmake:x64-linux package ABI: 203575f7148f2e0cc8b22966febdb416b0464c2e69a17d53f31cdec543bbc4bc
+Installing 3/3 gtest:x64-linux@1.14.0#1...
+Elapsed time to handle gtest:x64-linux: 3.73 ms
+gtest:x64-linux package ABI: a6eeefc5182c40ceab7c65cf236b7340167499543d2e190eb0ae0f3ecc66696d
+Total install time: 5.24 ms
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
