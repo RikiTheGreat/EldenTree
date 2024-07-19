@@ -1,9 +1,0 @@
-Package: benchmark
-Version: 1.8.3
-Port-Version: 3
-Depends: vcpkg-cmake, vcpkg-cmake-config
-Architecture: x64-linux
-Multi-Arch: same
-Abi: dbf838a74259005f3489c5413124ea0c0953fa68a3e57bef70c013026193a5fc
-Description: A library to benchmark code snippets, similar to unit tests.
-Status: install ok installed
