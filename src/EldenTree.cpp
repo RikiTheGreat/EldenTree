@@ -8,18 +8,19 @@
 #include "logger.hpp"
 #include "EldenTree.hpp"
 
-et::EldenTree::EldenTree()
-    : _running(true), _eventsPending(false) {
+et::EldenTree::EldenTree(land::iland32 landNumber)
+    : _running(true), _eventsPending(false), _landNumber(landNumber) {
 #if HAS_JTHREAD
-    for (int i {}; i < 1; ++i)
-        _worker.emplace_back(&EldenTree::eventLoop, this);
+    for (int i {}; i < _landNumber; ++i)
+        _lands.emplace_back(&EldenTree::eventLoop, this);
 
 #else
-    for (int i = 0; i < 1; ++i) // you can increase the thread number
-        _worker.emplace_back(std::thread(&EldenTree::eventLoop, this));
+    for (int i = 0; i < _landNumber; ++i) // you can increase the thread number
+        _lands.emplace_back(std::thread(&EldenTree::eventLoop, this));
 
 #endif
 }
+
 
 et::EldenTree::~EldenTree() {
     this->stop();
@@ -68,7 +69,7 @@ void et::EldenTree::stop() {
     _cv.notify_all();
 
 #if HAS_JTHREAD == 0
-    for(auto & v : _worker) {
+    for(auto & v : _lands) {
         if(v.joinable())
             v.join();
     }

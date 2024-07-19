@@ -29,12 +29,14 @@ struct GodEvent;
 using GodName = std::string;
 using GodId = int;
 using GodAction = void (*)(GodEvent const &);  // C style function pointer is faster than std::function
-
+using GodConnection  = std::unordered_map<god::God, std::vector<god::God>>;
 }  // namespace et::god
 
 namespace et {
 using GodsWithActions = std::map<god::God, god::GodAction>;
 using EventQueue = std::map<god::God, std::queue<god::GodEvent>>;
+
+
 }  // namespace et
 
 namespace et::land {
@@ -42,7 +44,15 @@ namespace et::land {
 #if HAS_JTHREAD
 using Lands = std::vector<std::jthread>;
 #else
-using Lands = std::vector<std::thread>;
+
+#if HAS_JTHREAD
+    using Lands = std::vector<std::jthread>;
+#else
+    using Lands = std::vector<std::thread>;
+#endif
+
+using iland32 = int;
+
 #endif
 
 }  // namespace et::land

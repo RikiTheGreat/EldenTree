@@ -33,7 +33,7 @@ namespace et {
  */
 class EldenTree final {
 public:
-    EldenTree();
+    explicit EldenTree(land::iland32 landNumber = 1);
     ~EldenTree();
 
     /**
@@ -68,7 +68,7 @@ public:
      * @note you should return this function from your main
      * @return int Exit status code for main
      */
-    int exec();
+    [[nodiscard]] int exec();
 
     /**
      * @brief Connect god1 and god2 events together
@@ -86,14 +86,11 @@ private:  // methods
 private:
     GodsWithActions _gods;
     EventQueue _eventQueues;
+    god::GodConnection _connections;
+    land::iland32 _landNumber{};
+    land::Lands _lands;
     std::atomic<bool> _running;
     std::atomic<bool> _eventsPending;
-    std::unordered_map<god::God, std::vector<god::God>> _connections;
-#if HAS_JTHREAD
-  std::vector<std::jthread> _worker;
-#else
-    std::vector<std::thread> _worker;
-#endif
     std::mutex _mutex;
     std::condition_variable _cv;
     std::condition_variable _eventsProcessed;  // For waiting until events are processed
