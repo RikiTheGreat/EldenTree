@@ -10,7 +10,7 @@ EldenTree is an event handler library written in  ✨C++✨   in order to please
 
 - Compatible with all  C++ standards (11 ... 26)
 - Cross Platform
-- built-in concurrency support
+- Built-in concurrency support
 - Qt like api style (almost!)
 - Optimized and fast 
 
@@ -81,7 +81,7 @@ for a more comprehensive feature overview.
 
 ## Requirements
 EldenTree relays on some third-party libraries, such as [Google Benchmark][Benchmark]
-and [Google Test][Test]. Use [Vcpkg][vcpkg] to installing them automatically via [Cmake][cmake]!
+and [Google Test][Test]. Use [Cmake][cmake] to install them automatically via [Vcpkg][vcpkg]!
 <br/>
 
 
