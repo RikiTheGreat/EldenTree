@@ -3,7 +3,7 @@ FROM ubuntu:latest
 LABEL authors="mahdi"
 
 
-RUN apt-get update &&  apt-get install -y pkg-config   clang-format clang-tidy g++ git cmake make ninja-build doxygen curl zip unzip tar
+RUN apt-get update &&  apt-get install -y pkg-config clang-format clang-tidy g++ git cmake make ninja-build doxygen curl zip unzip tar
 
 COPY . /usr/src/EldenTree/
 WORKDIR /usr/src/EldenTree/
