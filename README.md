@@ -97,10 +97,12 @@ cmake --preset Linux-Release-Ninja
 ``
 </br>
 ``
-cd Linux-Release-Ninja && ninja
+cd linRelease-ninja-build && ninja
 ``
 <br/>
 
+Dockerfile is also available, you can build it using  
+``sudo docker build . -t eldentree:2.0.0``  command.
 
 ## Documents
 Enable DO_DOC option in CMakeLists.txt . After that You'll see a doc folder in you build directory.
