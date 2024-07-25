@@ -51,7 +51,11 @@ void et::EldenTree::addEvent(god::God const &god,
   god::GodEvent tmp_event;
   tmp_event.info = event;
 
-  _eventQueues[god].push(tmp_event);
+  if (!_connections.empty()) {
+    _eventQueues[_connections[god].at(0)].push(tmp_event);
+  } else {
+    _eventQueues[god].push(tmp_event);
+  }
   _eventsPending.store(true);
   _cv.notify_one();
 }
