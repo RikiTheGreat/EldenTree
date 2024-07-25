@@ -1,9 +1,22 @@
 cmake_minimum_required(VERSION 3.20)
-project(et VERSION 2.0.0 LANGUAGES CXX)
 
+set(CMAKE_TOOLCHAIN_FILE /home/mahdi/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
+project(et VERSION 2.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(
+            -Wall        # Enable all warnings
+            -Wextra      # Enable extra warnings
+    )
+elseif(MSVC)
+    add_compile_options(
+            /W4         # Enable level 4 warnings in MSVC
+    )
+endif()
 
 option(DO_TEST "enable testing" ON)
 option(DO_DOC "enable generating documentation" ON)
