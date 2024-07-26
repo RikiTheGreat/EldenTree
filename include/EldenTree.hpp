@@ -13,18 +13,6 @@
 #include "God.hpp"
 #include "types.hpp"
 
-#ifdef __has_include
-#if __has_include(<thread> ) && __cplusplus >= 202002L
-#if defined(__cpp_lib_jthread) && __cpp_lib_jthread >= 201911L
-#define HAS_JTHREAD 1
-#else
-#define HAS_JTHREAD 0
-#endif
-#else
-#define HAS_JTHREAD 0
-#endif
-#endif
-
 namespace et {
 /**
  * @class EldenTree
@@ -95,6 +83,87 @@ private:
   std::condition_variable
       _eventsProcessed; // For waiting until events are processed
 };
-} // namespace et
 
+#if HAS_FOLD_EXPRESSIONS
+#if HAS_CONCEPTS
+template <typename FirstGod, typename SecondGod, typename... OtherGods>
+  requires et::god::IsGod<FirstGod> && et::god::IsGod<SecondGod> &&
+           (et::god::IsGod<OtherGods> && ...)
+#else
+template <typename FirstGod, typename SecondGod, typename... OtherGods,
+          typename std::enable_if<
+              std::is_same<FirstGod, god::God>::value &&
+                  std::is_same<SecondGod, god::God>::value &&
+                  (... && std::is_same<OtherGods, god::God>::value),
+              int>::type = 0>
+#endif
+void connect(et::EldenTree &tree, FirstGod const &first,
+             SecondGod const &second, OtherGods const &...other_gods) {
+  tree.connect(first, second);
+  // Connect the first god with each of the other gods
+  (tree.connect(first, other_gods), ...);
+  connect(tree, second,
+          other_gods...); // Recur for the second god and remaining gods
+}
+
+#if HAS_CONCEPTS
+template <typename LastGod>
+  requires et::god::IsGod<LastGod>
+#else
+template <typename LastGod,
+          typename std::enable_if<std::is_same<LastGod, god::God>::value,
+                                  int>::type = 0>
+#endif
+
+void connect(et::EldenTree &tree, FirstGod const &first,
+             SecondGod const &second, OtherGods... other_gods) {
+  tree.connect(first, second);
+  (tree.connect(first, other_gods),
+   ...); // Connect the first god with each of the other gods
+  connect(tree, second,
+          other_gods...); // Recur for the second god and remaining gods
+}
+
+void connect(et::EldenTree &tree, LastGod const &god) {
+  // only one god left that does nothing othing to connect, end recursion
+}
+
+#else
+
+template <typename GodOne, typename GodTwo>
+void connect(et::EldenTree &tree, const GodOne &god1, const GodTwo &god2) {
+  tree.connect(god1, god2);
+}
+
+/**
+ * @brief Connect multiple gods together
+ * @note Recursive variadic template for three or more gods
+ * @tparam FirstGod
+ * @tparam SecondGod
+ * @tparam ThirdGod
+ * @tparam OtherGods
+ * @param tree
+ * @param god1
+ * @param god2
+ * @param god3
+ * @param other_gods
+ */
+template <typename FirstGod, typename SecondGod, typename ThirdGod,
+          typename... OtherGods>
+void connect(et::EldenTree &tree, FirstGod const &god1, SecondGod const &god2,
+             ThirdGod const &god3, OtherGods const &...other_gods) {
+  tree.connect(god1, god2);
+  if (sizeof...(other_gods) > 0) { // Check if there are more gods to process
+    connect(tree, god1, god3,
+            other_gods...); // Continue connecting the first god with all others
+    connect(tree, god2, god3,
+            other_gods...); // Continue the pattern for the second god
+  } else {
+    connect(tree, god1, god3); // Final connect for the trio of gods
+    connect(tree, god2, god3); // Ensures all pairings are covered
+  }
+}
+
+#endif
+} // namespace et
 #endif // ELDENTREE_HPP
