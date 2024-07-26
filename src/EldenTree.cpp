@@ -34,11 +34,12 @@ void et::EldenTree::addGod(god::God const &god, god::GodAction action) {
 void et::EldenTree::addEvent(god::God const &god,
                              god::GodEvent const &event) noexcept {
   std::unique_lock<std::mutex> lock(this->_mutex);
-  if (!_connections.empty()) {
-    _eventQueues[_connections[god].at(0)].push(event);
 
+  if (!_connections[god].empty()) {
+    for (auto const &g : _connections[god])
+      _eventQueues[g].emplace(event);
   } else {
-    _eventQueues[god].push(event);
+    _eventQueues[god].emplace(event);
   }
 
   _eventsPending.store(true);
@@ -51,10 +52,11 @@ void et::EldenTree::addEvent(god::God const &god,
   god::GodEvent tmp_event;
   tmp_event.info = event;
 
-  if (!_connections.empty()) {
-    _eventQueues[_connections[god].at(0)].push(tmp_event);
+  if (!_connections[god].empty()) {
+    for (auto const &g : _connections[god])
+      _eventQueues[g].emplace(tmp_event);
   } else {
-    _eventQueues[god].push(tmp_event);
+    _eventQueues[god].emplace(tmp_event);
   }
   _eventsPending.store(true);
   _cv.notify_one();
@@ -91,8 +93,8 @@ int et::EldenTree::exec() {
 
 void et::EldenTree::connect(god::God const &god1, god::God const &god2) {
   std::lock_guard<std::mutex> lock(_mutex);
-  _connections[god1].push_back(god2);
-  _connections[god2].push_back(god1); // For bidirectional connection
+  _connections[god1].emplace(god2);
+  _connections[god2].emplace(god1); // For bidirectional connection
 }
 
 void et::EldenTree::eventLoop() {

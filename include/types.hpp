@@ -7,6 +7,7 @@
 
 #include <map>
 #include <queue>
+#include <set>
 #include <string>
 #include <thread>
 #include <vector>
@@ -23,6 +24,28 @@
 #endif
 #endif
 
+#ifdef __has_include
+#if __has_include(<concepts>) && __cplusplus >= 202002L
+#if defined(__cpp_concepts) && __cpp_concepts >= 201907L
+#define HAS_CONCEPTS 1
+#else
+#define HAS_CONCEPTs 0
+#endif
+#else
+#define HAS_CONCEPTS 0
+#endif
+#endif
+
+#ifdef __has_include
+#if __has_modifier
+#if defined(__cplusplus) && __cplusplus >= 201703L
+#define HAS_FOLD_EXPRESSIONS 1
+#else
+#define HAS_FOLD_EXPRESSIONS 0
+#endif
+#endif
+#endif
+
 namespace et::god {
 struct God;
 struct GodEvent;
@@ -30,7 +53,13 @@ using GodName = std::string;
 using GodId = int;
 using GodAction = void (*)(
     GodEvent const &); // C style function pointer is faster than std::function
-using GodConnection = std::unordered_map<god::God, std::vector<god::God>>;
+using GodConnection = std::unordered_map<god::God, std::set<god::God>>;
+
+#if HAS_CONCEPTS
+template <typename T>
+concept IsGod = std::is_same_v<T, god::God>;
+#endif
+
 } // namespace et::god
 
 namespace et {

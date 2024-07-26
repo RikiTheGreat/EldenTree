@@ -1,0 +1,3 @@
+add_executable(basic_example2 example2.cpp)
+
+target_link_libraries(basic_example2 PRIVATE EldenTree)
