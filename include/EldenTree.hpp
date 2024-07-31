@@ -102,8 +102,8 @@ void connect(et::EldenTree &tree, FirstGod const &first,
   tree.connect(first, second);
   // Connect the first god with each of the other gods
   (tree.connect(first, other_gods), ...);
-  connect(tree, second,
-          other_gods...); // Recur for the second god and remaining gods
+  // Recur for the second god and remaining gods
+  connect(tree, second, other_gods...);
 }
 
 #if HAS_CONCEPTS
@@ -114,15 +114,6 @@ template <typename LastGod,
           typename std::enable_if<std::is_same<LastGod, god::God>::value,
                                   int>::type = 0>
 #endif
-
-void connect(et::EldenTree &tree, FirstGod const &first,
-             SecondGod const &second, OtherGods... other_gods) {
-  tree.connect(first, second);
-  (tree.connect(first, other_gods),
-   ...); // Connect the first god with each of the other gods
-  connect(tree, second,
-          other_gods...); // Recur for the second god and remaining gods
-}
 
 void connect(et::EldenTree &tree, LastGod const &god) {
   // only one god left that does nothing othing to connect, end recursion

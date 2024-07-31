@@ -38,7 +38,7 @@ auto main() -> int
 
     };
 
-    et::EldenTree tree{et::land::iland32(2)};
+    et::EldenTree tree{et::land::iland32(4)};
     tree.addGod(Zeous, [](et::god::GodEvent const& event)
     {
         std::cout << "Zeous:" << event.info << '\n';
@@ -62,7 +62,7 @@ auto main() -> int
     std::cout << "Sky:" << event.info << '\n';
 });
 
-    connect(tree, Zeous, Queen, Dragon, Sky);
+    et::connect(tree, Zeous, Queen, Dragon, Sky);
 
     tree.addEvent(Queen, "hello from Queen");
     tree.addEvent(Dragon, "hello from Dragon");
