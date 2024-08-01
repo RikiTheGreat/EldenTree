@@ -20,7 +20,8 @@ auto main() -> int
 
     };
 
-    et::EldenTree tree{et::land::iland32(2)};
+    et::EldenTree tree{et::land::iland32(4)};
+
     tree.addGod(zeous, godHandler);
     tree.addEvent(zeous, et::god::GodEvent{"zeous said: hi"});
     tree.addEvent(zeous, et::god::GodEvent{"zeous said: bye"});
